@@ -528,6 +528,10 @@ export class App {
     byId("share-step").hidden = guest;
     // The line that points to step 4 would point at nothing there.
     byId("share-hint").hidden = guest;
+    // What the assistant is said to be able to do has to be true on this copy too (see guestRefusal).
+    byId("action-list").hidden = guest;
+    byId("action-list-guest").hidden = !guest;
+    byId("assistant-guest-note").hidden = !guest;
   }
 
   render() {

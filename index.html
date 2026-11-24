@@ -103,7 +103,7 @@
     <section id="assistant" class="step assistant" aria-labelledby="assistant-heading">
       <h2 id="assistant-heading">Ask the No Envy assistant</h2>
       <p>Optional: the page above works the same without it. The assistant can use this sheet for you through six actions the page gives it, and explain the result in plain words. The page does all the arithmetic; the assistant only passes numbers along.</p>
-      <ul class="action-list">
+      <ul class="action-list" id="action-list">
         <li>read the sheet</li>
         <li>set up the place</li>
         <li>fill in one person's amounts</li>
@@ -111,6 +111,12 @@
         <li>find the split</li>
         <li>try a what-if without touching the page</li>
       </ul>
+      <ul class="action-list" id="action-list-guest" hidden>
+        <li>read the sheet</li>
+        <li>fill in your own amounts</li>
+        <li>try a what-if without touching the page</li>
+      </ul>
+      <p id="assistant-guest-note" class="assistant-note" hidden>This is one housemate's own copy, so here the assistant gets those three. Setting up the place, the “no rent below zero” option and finding the split belong to whoever sent the link: the page refuses them on this copy and says so.</p>
       <p class="assistant-note"><strong>To turn it on,</strong> open “AI model settings” under the chat and connect an AI provider (OpenRouter offers a free model) or paste a key of your own. It runs in your browser: your messages, and the sheet data it reads, go to the provider you choose there, and nowhere else. Every change it makes to the sheet shows an Undo right under the chat, and at the top of the page.</p>
       <p id="assistant-status" role="status">Connecting the assistant… If this message stays, the assistant could not load. You can still use the page directly.</p>
       <div id="agent-app">

@@ -115,6 +115,8 @@ h2 {
 .action-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; padding: 0; list-style: none; }
 
 .action-list li { padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: 0.92rem; }
+/* Two lists, one shown: all six on a sheet of one's own, the three that work on a housemate's copy. */
+.action-list[hidden], .assistant-note[hidden] { display: none; }
 
 /* One sentence that may end in a link: a block, so that the link stays in the sentence. */
 .notice {
