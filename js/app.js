@@ -74,9 +74,8 @@ export class App {
     return this.sheet.getState();
   }
 
-  // A housemate's own copy takes that housemate's amounts and nothing else. The page's buttons for anything
-  // more are not shown there (renderGuest); this is the same rule for the assistant, whose actions call
-  // these functions. Returns the refusal to give, or null on any other sheet.
+  // A housemate's own copy takes that housemate's amounts and nothing else, from buttons and assistant
+  // alike. Returns the refusal to give there, or null on any other sheet.
   guestRefusal(what) {
     const state = this.getState();
     if (!this.locked(state)) return null;
@@ -167,11 +166,8 @@ export class App {
     return { sheet: JSON.parse(JSON.stringify(this.sheet.toJSON())), me: this.me };
   }
 
-  // Say what changed and offer one press to take it back.
-  // Undo takes back the last change. If the assistant made several in a row, pressing it again takes back
-  // the one before, and so on, so nothing it did is out of reach.
-  // `byAssistant`: the change came from the assistant, so the same offer is also shown next to the chat
-  // (see renderNear): the notice at the top of the page is far out of sight from there.
+  // Say what changed and offer one press to take it back; pressing again steps further back.
+  // `byAssistant`: the offer is also shown next to the chat (renderNear), far from the top of the page.
   offerUndo(before, text, byAssistant = false) {
     this.undoStack.push({ before, text, byAssistant });
     if (this.undoStack.length > 20) this.undoStack.shift();
@@ -181,8 +177,7 @@ export class App {
     if (byAssistant) this.revealNear();
   }
 
-  // The person is at the chat (its input row is on screen, or nearly): bring the line under it into view,
-  // by as little as it takes. Anywhere else on the page nothing moves.
+  // Only when the visitor is at the chat: bring the line under it into view, by as little as it takes.
   revealNear() {
     // The line sits directly under the chat, so where it is says where the chat's input row is.
     const box = byId("assistant-change");
@@ -471,8 +466,7 @@ export class App {
     const state = this.getState();
     const mine = state.people[this.me];
     if (!mine) return;
-    // The answer goes right under the button. (It used to go to the sharing box of step 4, which on a
-    // phone is off screen: the housemate pressed the button and saw nothing happen.)
+    // The answer goes right under the button: on a phone the sharing box of step 4 is off screen.
     const here = { field: "me-output-field", status: "me-status", output: "me-output" };
     if (!mine.addsUp) {
       this.offerLink(null, `${mine.name}, your amounts need to add up to ${money(state.total, state.currency)} first.`, here);
@@ -516,9 +510,8 @@ export class App {
     node.hidden = !reason;
   }
 
-  // A housemate's own copy holds only that housemate's answer. A split worked out there would rest on
-  // placeholders for everyone else, and a link sent from there would carry an incomplete sheet, so the page
-  // offers neither on such a copy and says who does work out the split.
+  // On a housemate's own copy a split would rest on placeholders and a link would carry an incomplete
+  // sheet: neither is offered there.
   renderGuest() {
     const guest = this.locked(this.getState());
     byId("jump").hidden = guest;
@@ -545,8 +538,7 @@ export class App {
     this.renderShare();
   }
 
-  // What the assistant just changed, and the way back, next to the chat. It repeats the notice at the top
-  // of the page, which a person typing in the chat cannot see.
+  // What the assistant just changed, and the way back, next to the chat: the top notice is out of sight there.
   renderNear() {
     const box = byId("assistant-change");
     if (!box) return;
@@ -793,9 +785,7 @@ export class App {
       ? `${money(even.rentEach[0], c)} each`
       : `about ${money(even.rentEach[0], c)} each`;
     const isEven = result.rents.every((r) => r.rent === even.rentEach[r.room]);
-    // What is said about the split above has to match its own verdict: "nobody wants to swap" only when
-    // that is exactly so, the size of the gap when whole-number rents leave one, and nothing while the
-    // split still rests on placeholders.
+    // The comparison has to match the verdict above: no "nobody wants to swap" over a gap or over placeholders.
     const holds = provisional
       ? ""
       : perfect
@@ -804,8 +794,6 @@ export class App {
     const compare = el("p", { class: "compare", text: even.envy.length > 0
       ? `Compare an even split of ${evenly}: ${listInWords(wishes(even.envy, c))}.${holds}`
       : isEven
-        // (It used to give a reason, "nobody values one room more than the others do", that is not what
-        // makes an even split fair: three people who each like a different room best also end up here.)
         ? `With these numbers the fair split is the even one, ${evenly}: it already leaves nobody wanting to swap.`
         : `With these numbers, an even split of ${evenly} would also leave nobody wanting to swap. The rents above share the benefit more evenly.` });
 

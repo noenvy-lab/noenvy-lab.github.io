@@ -11,11 +11,9 @@
 const EPS = 1e-9;
 export const MAX_PEOPLE = 8;
 
-// Tolerances for the rent calculation, in units of money. The amounts are whole units, so two
-// different outcomes differ by far more than these; and at the largest total allowed (ten million)
-// the rounding noise of the arithmetic stays far below them. They used to be fractions of the total
-// rent, where one unit of a ten-million total is 1e-7: a sheet of nearly equal amounts was then
-// sometimes refused as having no fair split (found by tools/fuzz-large.mjs, 2026-11-24).
+// Tolerances for the rent calculation, in units of money (not fractions of the total). Amounts are whole
+// units, so two different outcomes differ by far more than these, and rounding noise stays far below them
+// up to the largest total allowed.
 const MISSED_BY_NOISE = 1e-5; // a constraint missed by less than this is rounding noise
 const SAME_GAIN = 1e-5;       // two gains closer than this are the same gain
 const SLACK = 1e-7;

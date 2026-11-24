@@ -183,10 +183,8 @@ input[type="text"], input[type="number"] {
 
 input:invalid, input.invalid { border-color: var(--warn); }
 
-/* A field that cannot be changed here has to look it. On a housemate's copy the whole set-up is read-only;
-   it is drawn the way the other housemates' cards are: dashed, on the paper. Only the set-up is styled so
-   (the rent and the count in .setup-grid, the names in .names-grid), the assistant's own controls keep the
-   runtime's look. */
+/* Read-only fields of the set-up (a housemate's copy) look it: dashed, like the other housemates' cards.
+   The assistant's own controls are left to the runtime. */
 .setup-grid input:disabled, .setup-grid button:disabled, .names-grid input:disabled {
   background: transparent;
   border-style: dashed;
