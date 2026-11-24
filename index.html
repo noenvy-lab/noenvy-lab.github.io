@@ -95,14 +95,14 @@
       </div>
       <label class="field share-output" id="share-output-field" hidden>
         <span id="share-status" role="status"></span>
-        <input id="share-output" type="text" readonly>
+        <input id="share-output" type="text" readonly aria-label="The link, to copy and send">
       </label>
       <p class="hint small">A link carries the numbers inside the link itself, after the “#”, a part of the address that browsers do not send to the site, so only the people you send it to can see them. Nothing is stored on a server of ours. If you use the assistant, the sheet it reads goes to the AI provider you picked.</p>
     </section>
 
     <section id="assistant" class="step assistant" aria-labelledby="assistant-heading">
       <h2 id="assistant-heading">Ask the No Envy assistant</h2>
-      <p>Optional: the page above works the same without it. The assistant can use this sheet for you through six actions the page gives it, and explain the result in plain words. The page does all the arithmetic; the assistant only passes numbers along.</p>
+      <p id="assistant-intro">Optional: the page above works the same without it. <span id="assistant-can">The assistant can use this sheet for you through six actions the page gives it, and explain the result in plain words.</span><span id="assistant-can-guest" hidden>On this copy the assistant can use three of the page's six actions for you, and explain in plain words how the split will be worked out.</span> The page does all the arithmetic; the assistant only passes numbers along.</p>
       <ul class="action-list" id="action-list">
         <li>read the sheet</li>
         <li>set up the place</li>

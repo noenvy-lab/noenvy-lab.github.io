@@ -529,6 +529,8 @@ export class App {
     // The line that points to step 4 would point at nothing there.
     byId("share-hint").hidden = guest;
     // What the assistant is said to be able to do has to be true on this copy too (see guestRefusal).
+    byId("assistant-can").hidden = guest;
+    byId("assistant-can-guest").hidden = !guest;
     byId("action-list").hidden = guest;
     byId("action-list-guest").hidden = !guest;
     byId("assistant-guest-note").hidden = !guest;
@@ -689,7 +691,8 @@ export class App {
       mine ? el("button", { type: "button", id: "me-copy", class: "primary reply", text: "Copy my reply link", onclick: () => this.copyReply() }) : null,
       mine ? el("label", { class: "field share-output reply-output", id: "me-output-field", hidden: true },
         el("span", { id: "me-status", role: "status" }),
-        el("input", { id: "me-output", type: "text", readonly: true }),
+        // Named on its own: the sentence beside it changes with every press and is empty before the first.
+        el("input", { id: "me-output", type: "text", readonly: true, "aria-label": "Your reply link, to copy and send" }),
       ) : null,
     );
   }
