@@ -64,7 +64,7 @@
     <section class="step" aria-labelledby="bids-heading">
       <h2 id="bids-heading"><span class="step-number">2</span> What each room is worth to each housemate</h2>
       <p class="hint">Each housemate shares out the whole rent across the rooms: more on the rooms they like, less on the others. The amounts add up to the rent because the rent has to be paid in full. The same amount on two rooms means you would be equally happy with either. Honest numbers are the safe choice: you never pay more than your own number for the room you get (give or take 1 from rounding).</p>
-      <p class="hint">Not in the same room? Send each housemate their own link (step 4) and they fill in their card on their own phone.</p>
+      <p class="hint" id="share-hint">Not in the same room? Send each housemate their own link (step 4) and they fill in their card on their own phone.</p>
       <div id="me-banner" class="me-banner" hidden>
         <p id="me-text"></p>
       </div>
@@ -73,7 +73,8 @@
 
     <section class="step" aria-labelledby="result-heading">
       <h2 id="result-heading"><span class="step-number">3</span> The split</h2>
-      <div class="solve-row">
+      <p id="guest-split-note" class="hint" hidden>The split is worked out by whoever sent you this page, once everyone has answered. Your part is your card above: fill it in, send your reply link, and you are done.</p>
+      <div class="solve-row" id="solve-row">
         <button type="button" id="solve-button" class="primary big">Find the fair split</button>
         <label class="check">
           <input type="checkbox" id="non-negative">
@@ -85,7 +86,7 @@
       <div id="result" class="result" aria-live="polite"></div>
     </section>
 
-    <section class="step" aria-labelledby="share-heading">
+    <section class="step" id="share-step" aria-labelledby="share-heading">
       <h2 id="share-heading"><span class="step-number">4</span> Do it together</h2>
       <p class="hint">Let each housemate fill in their own amounts on their own phone. Send each their link; they send you a reply link; open it in this browser and their amounts drop into this sheet. Each housemate's link leaves the others' amounts out, so nobody's answer is shaped by another's.</p>
       <div id="ask-list" class="ask-list"></div>

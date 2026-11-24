@@ -497,8 +497,23 @@ export class App {
     node.hidden = !reason;
   }
 
+  // A housemate's own copy holds only that housemate's answer. A split worked out there would rest on
+  // placeholders for everyone else, and a link sent from there would carry an incomplete sheet, so the page
+  // offers neither on such a copy and says who does work out the split.
+  renderGuest() {
+    const guest = this.locked(this.getState());
+    byId("hero-solve").hidden = guest;
+    byId("solve-row").hidden = guest;
+    byId("result").hidden = guest;
+    byId("guest-split-note").hidden = !guest;
+    byId("share-step").hidden = guest;
+    // The line that points to step 4 would point at nothing there.
+    byId("share-hint").hidden = guest;
+  }
+
   render() {
     this.renderNotice();
+    this.renderGuest();
     this.renderSetup();
     this.renderBids();
     this.renderResult();
