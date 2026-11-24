@@ -181,6 +181,19 @@ input[type="text"], input[type="number"] {
 
 input:invalid, input.invalid { border-color: var(--warn); }
 
+/* A field that cannot be changed here has to look it. On a housemate's copy the whole set-up is read-only;
+   it is drawn the way the other housemates' cards are: dashed, on the paper. Only the set-up is styled so,
+   the assistant's own controls keep the runtime's look. */
+.setup-grid input:disabled, .setup-grid button:disabled {
+  background: transparent;
+  border-style: dashed;
+  color: var(--muted);
+  -webkit-text-fill-color: var(--muted);
+  opacity: 1;
+  cursor: not-allowed;
+}
+.setup-grid button:disabled:hover { border-color: var(--line); }
+
 .field { display: grid; gap: 6px; font-weight: 600; }
 
 .field > span:first-child { font-size: 0.92rem; color: var(--muted); }
