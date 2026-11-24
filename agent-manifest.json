@@ -1,0 +1,86 @@
+{
+  "brand": "No Envy Assistant",
+  "networks": [
+    {
+      "name": "no_envy",
+      "front_man": "rent_guide",
+      "hocon": "./no_envy.network.json",
+      "description": "I can fill in this rent sheet with you, work out a split where nobody wants to swap rooms, and explain it. The page does the arithmetic, not the AI.",
+      "tags": [
+        "agentified-website",
+        "fair-division",
+        "rent"
+      ],
+      "sample_queries": [
+        "Who gets which room on this sheet, and what does each person pay?",
+        "We are three housemates paying 2400 a month for a big room, a middle room and a small room. Set up the sheet for us.",
+        "What would change if the first person valued the first room 100 lower and the second room 100 higher?",
+        "Why is this split fair? Explain it simply.",
+        "Our lease says the tenants are jointly and severally liable. Can you ask Plainly what that means?",
+        "Can you collect the rent from my housemates each month?"
+      ]
+    }
+  ],
+  "llm_router": {
+    "base_url": "https://api.otari.ai/api/v1",
+    "mock": false,
+    "byok_router": "https://api.otari.ai/api/v1"
+  },
+  "allowed_peers": [
+    "https://sainath998.github.io"
+  ],
+  "peer_policy": {
+    "mode": "closed",
+    "deny_origins": [],
+    "note": "Local agents and page-local actions, plus the partner sites in allowed_peers, which are called only after the visitor agrees on a card."
+  },
+  "agent_mcp": {
+    "protocol": "nsdeploy-agent-mcp/v1",
+    "network": "no_envy",
+    "front_man": "rent_guide",
+    "available": false,
+    "reason": "This is a static bundle; a public MCP facade requires an application host."
+  },
+  "theme": {
+    "primary": "#0f5c5a"
+  },
+  "linking": {
+    "protocol": "nsdeploy-link/v1",
+    "exports": [
+      {
+        "network": "no_envy",
+        "front_man": "rent_guide",
+        "aliases": [
+          "no_envy",
+          "rent_guide"
+        ],
+        "url": "no_envy"
+      }
+    ],
+    "imports": [],
+    "link_updates": {
+      "mode": "browser-local"
+    }
+  },
+  "deployment": {
+    "mode": "static",
+    "self_contained_runtime": true,
+    "browser_mock": false,
+    "direct_byok": true,
+    "direct_mcp_requires_cors": true,
+    "public_mcp_facade": false
+  },
+  "actions": {
+    "version": 1,
+    "module": "./site-actions.js",
+    "bridge": "./bridge/action-bridge.html",
+    "agentTools": [
+      "get_rent_sheet",
+      "set_place",
+      "set_amounts",
+      "set_no_rent_below_zero",
+      "find_split",
+      "try_split"
+    ]
+  }
+}

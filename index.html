@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>No Envy: split the rent so nobody wants to swap rooms</title>
+  <meta name="description" content="Housemates say what each room is worth to them. No Envy works out who gets which room and what each pays, so that nobody would rather have another room at its rent. Check the result yourself. No account, and no server of ours.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="js/app.js"></script>
+  <script type="module" src="site.js"></script>
+</head>
+<body>
+  <header class="hero">
+    <p class="brand"><span class="brand-mark" aria-hidden="true"></span>No Envy</p>
+    <h1>Split the rent so nobody wants to swap rooms.</h1>
+    <p class="lede">The rooms are not equal, so an even split is not fair. Each housemate says what each room is worth to them. You get who lives where and what each pays, and a table to check that nobody would rather have another room at its rent.</p>
+    <p class="jump">
+      <button type="button" id="hero-solve" class="primary">See the example's fair split</button>
+      <a href="#setup-heading">Set up your own place</a>
+      <a href="#assistant">Or do it with the AI assistant</a>
+    </p>
+  </header>
+
+  <main>
+    <div id="notice" class="notice" role="status" hidden>
+      <span id="notice-text"></span>
+      <button type="button" id="notice-action" class="link-button" hidden></button>
+    </div>
+
+    <section class="step" aria-labelledby="setup-heading">
+      <h2 id="setup-heading"><span class="step-number">1</span> The place</h2>
+      <div class="setup-grid">
+        <label class="field" for="total">
+          <span id="total-label">Total monthly rent</span>
+          <span class="money-input">
+            <input id="currency" type="text" maxlength="4" size="3" aria-label="Currency sign" title="Currency sign" autocomplete="off">
+            <input id="total" type="number" inputmode="numeric" min="1" max="10000000" step="1" autocomplete="off" aria-labelledby="total-label">
+          </span>
+        </label>
+        <div class="field">
+          <span id="count-label">Housemates and rooms</span>
+          <span class="stepper" role="group" aria-labelledby="count-label">
+            <button type="button" id="count-minus" aria-label="One fewer housemate and room">&minus;</button>
+            <output id="count-value" aria-live="polite"></output>
+            <button type="button" id="count-plus" aria-label="One more housemate and room">+</button>
+          </span>
+        </div>
+      </div>
+      <div class="names-grid">
+        <fieldset>
+          <legend>Housemates</legend>
+          <div id="people-list" class="name-list"></div>
+        </fieldset>
+        <fieldset>
+          <legend>Rooms</legend>
+          <div id="rooms-list" class="name-list"></div>
+        </fieldset>
+      </div>
+      <p id="setup-locked" class="hint" hidden>This part was set by whoever sent you the link. Your part is your own card in step 2.</p>
+      <p id="setup-error" class="error" role="alert" hidden></p>
+    </section>
+
+    <section class="step" aria-labelledby="bids-heading">
+      <h2 id="bids-heading"><span class="step-number">2</span> What each room is worth to each housemate</h2>
+      <p class="hint">Each housemate shares out the whole rent across the rooms: more on the rooms they like, less on the others. The amounts add up to the rent because the rent has to be paid in full. The same amount on two rooms means you would be equally happy with either. Honest numbers are the safe choice: you never pay more than your own number for the room you get (give or take 1 from rounding).</p>
+      <p class="hint">Not in the same room? Send each housemate their own link (step 4) and they fill in their card on their own phone.</p>
+      <div id="me-banner" class="me-banner" hidden>
+        <p id="me-text"></p>
+      </div>
+      <div id="bids" class="bids"></div>
+    </section>
+
+    <section class="step" aria-labelledby="result-heading">
+      <h2 id="result-heading"><span class="step-number">3</span> The split</h2>
+      <div class="solve-row">
+        <button type="button" id="solve-button" class="primary big">Find the fair split</button>
+        <label class="check">
+          <input type="checkbox" id="non-negative">
+          <span>No rent below zero</span>
+        </label>
+        <span class="check-hint">Without it, a room nobody wants can come with a payment.</span>
+      </div>
+      <p id="solve-error" class="error" role="alert" hidden></p>
+      <div id="result" class="result" aria-live="polite"></div>
+    </section>
+
+    <section class="step" aria-labelledby="share-heading">
+      <h2 id="share-heading"><span class="step-number">4</span> Do it together</h2>
+      <p class="hint">Let each housemate fill in their own amounts on their own phone. Send each their link; they send you a reply link; open it in this browser and their amounts drop into this sheet. Each housemate's link leaves the others' amounts out, so nobody's answer is shaped by another's.</p>
+      <div id="ask-list" class="ask-list"></div>
+      <div class="share-row">
+        <button type="button" id="share-sheet">Copy link to the whole sheet</button>
+      </div>
+      <label class="field share-output" id="share-output-field" hidden>
+        <span id="share-status" role="status"></span>
+        <input id="share-output" type="text" readonly>
+      </label>
+      <p class="hint small">A link carries the numbers inside the link itself, after the “#”, a part of the address that browsers do not send to the site, so only the people you send it to can see them. Nothing is stored on a server of ours. If you use the assistant, the sheet it reads goes to the AI provider you picked.</p>
+    </section>
+
+    <section id="assistant" class="step assistant" aria-labelledby="assistant-heading">
+      <h2 id="assistant-heading">Ask the No Envy assistant</h2>
+      <p>Optional: the page above works the same without it. The assistant can use this sheet for you through six actions the page gives it, and explain the result in plain words. The page does all the arithmetic; the assistant only passes numbers along.</p>
+      <ul class="action-list">
+        <li>read the sheet</li>
+        <li>set up the place</li>
+        <li>fill in one person's amounts</li>
+        <li>switch “no rent below zero”</li>
+        <li>find the split</li>
+        <li>try a what-if without touching the page</li>
+      </ul>
+      <p class="assistant-note"><strong>To turn it on,</strong> open “AI model settings” under the chat and connect an AI provider (OpenRouter offers a free model) or paste a key of your own. It runs in your browser: your messages, and the sheet data it reads, go to the provider you choose there, and nowhere else. Every change it makes to the sheet shows an Undo right under the chat, and at the top of the page.</p>
+      <p id="assistant-status" role="status">Connecting the assistant… If this message stays, the assistant could not load. You can still use the page directly.</p>
+      <div id="agent-app">
+        <div data-ns-slot="header"></div>
+        <div class="assistant-panels">
+          <div class="assistant-main">
+            <div data-ns-slot="chat"></div>
+            <div id="assistant-change" class="notice assistant-change" role="status" hidden>
+              <span id="assistant-change-text"></span>
+              <button type="button" id="assistant-change-undo" class="link-button"></button>
+              <button type="button" id="assistant-change-show" class="link-button">Show it on the sheet</button>
+            </div>
+          </div>
+          <div data-ns-slot="agents"></div>
+        </div>
+        <div data-ns-slot="settings"></div>
+      </div>
+    </section>
+
+    <section class="step about" aria-labelledby="about-heading">
+      <h2 id="about-heading">How it works</h2>
+      <ol>
+        <li><strong>Rooms go where they are valued most.</strong> Out of every way to hand out the rooms, the one with the highest total of everyone's own numbers is used. Any split where nobody wants to swap has to start there.</li>
+        <li><strong>Rents are set so nobody wants to swap.</strong> For each person, their own number for their room minus its rent is at least as good as that for any other room.</li>
+        <li><strong>Among all such rents, the ones kindest to the worst-off person are picked.</strong> There is usually a range of rents that work. This picks the ones that leave the least-well-off person as well off as possible, then the next, and so on.</li>
+      </ol>
+      <p>The method follows the maximin envy-free rent division of Gal, Mash, Procaccia and Zick (2016); the “then the next, and so on” of step 3 is added so that there is one answer. The arithmetic runs in your browser, in plain code you can read. It is a calculation, not legal or financial advice.</p>
+      <p>Two honest limits. Rents are whole numbers, so now and then someone (sometimes more than one person) ends up a unit short of a perfect match (one unit at most in every sheet we have tested); the result says so, and by how much, when it happens. And someone who misstates their numbers on purpose can sometimes come out ahead, as with any such method.</p>
+      <h3 class="sub">For other sites and agents</h3>
+      <p id="lease-help"><strong>Lease wording.</strong> No Envy splits rent; it does not read leases. For what a clause in a rental agreement means in plain words, there is <a id="partner-plainly" href="https://sainath998.github.io/plainly-agent/" rel="noopener">Plainly</a>, an independent site written for readers in India. The optional assistant can ask Plainly’s assistant for you: it first shows a card with the site and the start of the question, and nothing is contacted until you allow it. Then your browser fetches Plainly’s public agent files from its site and runs them here, with the AI provider you picked. The page passes along only the assistant’s question, never your rent sheet, and the assistant is told to send only the clause you asked about. Plainly’s answer is general information, not legal advice.</p>
+      <p id="for-agent-sites"><strong>For other agent sites.</strong> The split itself is shared: another site's assistant can call this site's agent network (<code>no_envy</code>, next to this page's <code>agent-manifest.json</code>) and use its <code>try_split</code> action to share out any cost among people who value the parts differently. It only works on the numbers in the call. It cannot see a sheet typed on this page, and it stores nothing.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>No Envy was designed and built by an AI agent (Anthropic's Claude), operated by a human. Open source under the Apache 2.0 licence.</p>
+    <p>No account, no tracking, no server of ours: your numbers stay in this browser and in the links you choose to share. If you turn on the optional assistant, what you type to it and the sheet it reads go to the AI provider you pick.</p>
+  </footer>
+</body>
+</html>

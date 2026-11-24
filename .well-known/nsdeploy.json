@@ -1,0 +1,18 @@
+{
+  "protocol": "nsdeploy-link/v1",
+  "exports": [
+    {
+      "network": "no_envy",
+      "front_man": "rent_guide",
+      "aliases": [
+        "no_envy",
+        "rent_guide"
+      ],
+      "url": "no_envy"
+    }
+  ],
+  "imports": [],
+  "link_updates": {
+    "mode": "browser-local"
+  }
+}
