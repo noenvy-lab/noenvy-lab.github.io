@@ -129,7 +129,7 @@ h2 {
 
 .notice[hidden], .me-banner[hidden], .error[hidden], .share-output[hidden] { display: none; }
 /* Parts a housemate's own copy does not offer (see renderGuest in app.js). */
-.solve-row[hidden], .result[hidden], .step[hidden], #hero-solve[hidden], .hint[hidden] { display: none; }
+.solve-row[hidden], .result[hidden], .step[hidden], .jump[hidden], .hint[hidden] { display: none; }
 
 button, input { font: inherit; color: inherit; }
 

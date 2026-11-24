@@ -49,7 +49,12 @@ class SiteActions {
       description: "Read the rent sheet on this page: total rent, currency, people and rooms (each with its index), each person's amounts and whether they add up, what still stops a split (problems), the option, the latest split (result) if it is still current, and leaseHelp, the link to the partner site Plainly. Call it before answering about the sheet or changing it, and again in each turn that needs it: the visitor can also edit the page. isExample true means the made-up starting example. unanswered names the people who have not entered amounts yet: their row is only an even placeholder. personalCopy true means this is one housemate's copy, without the others' amounts.",
       effect: "read",
       inputSchema: { type: "object", properties: {}, additionalProperties: false },
-      execute: () => ({ ...App.page.getState(), leaseHelp: SiteActions.leaseHelp() }),
+      execute: () => {
+        const page = App.page;
+        // On one housemate's own copy, say so in the answer itself: what can be done there is different.
+        const guest = page.guestRefusal("only their own amounts can be filled in here, and the split is worked out by whoever sent the link once everyone has replied. Help with those amounts and with sending the reply link back.");
+        return { ...page.getState(), ...(guest ? { thisCopy: guest.reason } : {}), leaseHelp: SiteActions.leaseHelp() };
+      },
     };
   }
 

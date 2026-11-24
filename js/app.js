@@ -74,7 +74,19 @@ export class App {
     return this.sheet.getState();
   }
 
+  // A housemate's own copy takes that housemate's amounts and nothing else. The page's buttons for anything
+  // more are not shown there (renderGuest); this is the same rule for the assistant, whose actions call
+  // these functions. Returns the refusal to give, or null on any other sheet.
+  guestRefusal(what) {
+    const state = this.getState();
+    if (!this.locked(state)) return null;
+    const name = state.people[this.me]?.name ?? "one housemate";
+    return { ok: false, reason: `This is ${name}'s own copy of the rent sheet: ${what}`, field: "copy" };
+  }
+
   setSetup(change) {
+    const guest = this.guestRefusal("the rent, the names and the rooms were set by whoever sent the link, and cannot be changed here.");
+    if (guest) return guest;
     const hadMadeUp = this.sheet.hasMadeUpAmounts();
     const result = this.sheet.setSetup(change);
     if (result.ok) {
@@ -94,6 +106,8 @@ export class App {
   }
 
   setBids(person, amounts) {
+    const guest = person === this.me ? null : this.guestRefusal("only their own amounts can be filled in here. The others answer on their own links.");
+    if (guest) return guest;
     const result = this.sheet.setBids(person, amounts);
     if (result.ok) this.afterChange();
     return result;
@@ -106,12 +120,17 @@ export class App {
   }
 
   setOption(options) {
+    const guest = this.guestRefusal("that option belongs to the sheet of whoever sent the link.");
+    if (guest) return guest;
     const result = this.sheet.setOption(options);
     if (result.ok) this.afterChange();
     return result;
   }
 
   solve() {
+    // Everyone else's amounts are placeholders on such a copy: a split from it would be made of nothing.
+    const guest = this.guestRefusal("it holds nobody else's amounts, so no split can be worked out here. Whoever sent the link works it out once everyone has replied.");
+    if (guest) return guest;
     const result = this.sheet.solve();
     this.showError("solve-error", result.ok ? null : result.reason);
     this.renderResult();
@@ -502,7 +521,7 @@ export class App {
   // offers neither on such a copy and says who does work out the split.
   renderGuest() {
     const guest = this.locked(this.getState());
-    byId("hero-solve").hidden = guest;
+    byId("jump").hidden = guest;
     byId("solve-row").hidden = guest;
     byId("result").hidden = guest;
     byId("guest-split-note").hidden = !guest;
